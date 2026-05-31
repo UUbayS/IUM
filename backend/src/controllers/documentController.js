@@ -1,6 +1,7 @@
 const prisma = require('../config/prisma');
 const path = require('path');
 const fs = require('fs');
+const { isPathSafe } = require('../utils/validateFilePath');
 
 async function verifyDocument(req, res) {
   try {
@@ -54,6 +55,13 @@ async function downloadDocument(req, res) {
       return res.status(404).json({
         success: false,
         message: 'Dokumen tidak ditemukan',
+      });
+    }
+
+    if (!isPathSafe(document.filePath)) {
+      return res.status(403).json({
+        success: false,
+        message: 'Akses ditolak',
       });
     }
 
