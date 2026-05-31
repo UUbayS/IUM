@@ -23,6 +23,17 @@ async function verifyDocument(req, res) {
       });
     }
 
+    const existingDocument = await prisma.document.findUnique({
+      where: { id },
+    });
+
+    if (!existingDocument) {
+      return res.status(404).json({
+        success: false,
+        message: 'Dokumen tidak ditemukan',
+      });
+    }
+
     const document = await prisma.document.update({
       where: { id },
       data: {

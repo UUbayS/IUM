@@ -19,6 +19,17 @@ async function verifyPayment(req, res) {
       });
     }
 
+    const existingPayment = await prisma.payment.findUnique({
+      where: { id },
+    });
+
+    if (!existingPayment) {
+      return res.status(404).json({
+        success: false,
+        message: 'Pembayaran tidak ditemukan',
+      });
+    }
+
     const payment = await prisma.payment.update({
       where: { id },
       data: {
