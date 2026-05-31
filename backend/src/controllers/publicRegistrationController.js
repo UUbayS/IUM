@@ -3,6 +3,7 @@ const generateRegistrationNumber = require('../utils/generateRegistrationNumber'
 const generateAccessCode = require('../utils/generateAccessCode');
 const deleteUploadedFiles = require('../utils/deleteUploadedFiles');
 const { sanitizeObject } = require('../utils/sanitize');
+const { logError } = require('../utils/logger');
 
 const requiredDocumentTypes = [
   'kartu_keluarga',
@@ -232,6 +233,7 @@ async function submitRegistration(req, res) {
       },
     });
   } catch (error) {
+    logError(error, 'submitRegistration');
     deleteUploadedFiles(req.files);
 
     return res.status(500).json({
@@ -283,6 +285,7 @@ async function checkStatus(req, res) {
       },
     });
   } catch (error) {
+    logError(error, 'checkStatus');
     return res.status(500).json({
       success: false,
       message: 'Terjadi kesalahan server',

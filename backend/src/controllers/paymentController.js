@@ -1,4 +1,5 @@
 const prisma = require('../config/prisma');
+const { logError } = require('../utils/logger');
 
 async function verifyPayment(req, res) {
   try {
@@ -34,6 +35,7 @@ async function verifyPayment(req, res) {
       data: payment,
     });
   } catch (error) {
+    logError(error, 'verifyPayment');
     return res.status(500).json({
       success: false,
       message: 'Terjadi kesalahan server',

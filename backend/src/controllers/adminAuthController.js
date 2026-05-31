@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const prisma = require('../config/prisma');
+const { logError } = require('../utils/logger');
 
 async function loginAdmin(req, res) {
   try {
@@ -65,6 +66,7 @@ async function loginAdmin(req, res) {
       },
     });
   } catch (error) {
+    logError(error, 'loginAdmin');
     return res.status(500).json({
       success: false,
       message: 'Terjadi kesalahan server',

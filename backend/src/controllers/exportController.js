@@ -1,5 +1,6 @@
 const ExcelJS = require('exceljs');
 const prisma = require('../config/prisma');
+const { logError } = require('../utils/logger');
 
 async function exportRegistrations(req, res) {
   try {
@@ -96,6 +97,7 @@ async function exportRegistrations(req, res) {
     await workbook.xlsx.write(res);
     res.end();
   } catch (error) {
+    logError(error, 'exportRegistrations');
     return res.status(500).json({
       success: false,
       message: 'Gagal mengekspor data pendaftar',

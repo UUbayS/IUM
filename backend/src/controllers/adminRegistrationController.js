@@ -1,4 +1,5 @@
 const prisma = require('../config/prisma');
+const { logError } = require('../utils/logger');
 
 async function getAllRegistrations(req, res) {
   try {
@@ -51,6 +52,7 @@ async function getAllRegistrations(req, res) {
       },
     });
   } catch (error) {
+    logError(error, 'getAllRegistrations');
     return res.status(500).json({
       success: false,
       message: 'Terjadi kesalahan server',
@@ -85,6 +87,7 @@ async function getRegistrationDetail(req, res) {
       data: registration,
     });
   } catch (error) {
+    logError(error, 'getRegistrationDetail');
     return res.status(500).json({
       success: false,
       message: 'Terjadi kesalahan server',
@@ -127,6 +130,7 @@ async function updateRegistrationStatus(req, res) {
       data: registration,
     });
   } catch (error) {
+    logError(error, 'updateRegistrationStatus');
     return res.status(500).json({
       success: false,
       message: 'Terjadi kesalahan server',

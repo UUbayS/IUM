@@ -1,4 +1,7 @@
+const { logError } = require('../utils/logger');
+
 function errorMiddleware(error, req, res, next) {
+  logError(error, `${req.method} ${req.path}`);
   if (error.message === 'Format file tidak didukung') {
     return res.status(400).json({
       success: false,

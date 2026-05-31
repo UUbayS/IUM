@@ -2,6 +2,7 @@ const prisma = require('../config/prisma');
 const path = require('path');
 const fs = require('fs');
 const { isPathSafe } = require('../utils/validateFilePath');
+const { logError } = require('../utils/logger');
 
 async function verifyDocument(req, res) {
   try {
@@ -36,6 +37,7 @@ async function verifyDocument(req, res) {
       data: document,
     });
   } catch (error) {
+    logError(error, 'verifyDocument');
     return res.status(500).json({
       success: false,
       message: 'Terjadi kesalahan server',
@@ -82,6 +84,7 @@ async function downloadDocument(req, res) {
 
     return res.sendFile(filePath);
   } catch (error) {
+    logError(error, 'downloadDocument');
     return res.status(500).json({
       success: false,
       message: 'Terjadi kesalahan server',
