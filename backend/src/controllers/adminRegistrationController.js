@@ -1,5 +1,6 @@
 const prisma = require('../config/prisma');
 const { logError } = require('../utils/logger');
+const { isValidTransition } = require('../utils/statusTransitions');
 
 async function getAllRegistrations(req, res) {
   try {
@@ -116,7 +117,25 @@ async function updateRegistrationStatus(req, res) {
       });
     }
 
-    const registration = await prisma.registration.update({
+    const registration = await prisma.registration.findUnique({
+      where: { id },
+    });
+
+    if (!registration) {
+      return res.status(404).json({
+        success: false,
+        message: 'Data pendaftaran tidak ditemukan',
+      });
+    }
+
+    if (!isValidTransition(registration.status, status)) {
+      return res.status(400).json({
+        success: false,
+        message: `Transisi dari ${registration.status} ke ${status} tidak diizinkan`,
+      });
+    }
+
+    const updated = await prisma.registration.update({
       where: { id },
       data: {
         status,
@@ -127,7 +146,7 @@ async function updateRegistrationStatus(req, res) {
     return res.json({
       success: true,
       message: 'Status pendaftaran berhasil diperbarui',
-      data: registration,
+      data: updated,
     });
   } catch (error) {
     logError(error, 'updateRegistrationStatus');
