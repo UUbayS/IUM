@@ -4,7 +4,23 @@ const { logError } = require('../utils/logger');
 
 async function exportRegistrations(req, res) {
   try {
+    const { status, level, start_date, end_date } = req.query;
+
+    const where = {
+      ...(status ? { status } : {}),
+      ...(level ? { registrationLevel: level } : {}),
+      ...(start_date || end_date
+        ? {
+            createdAt: {
+              ...(start_date ? { gte: new Date(start_date) } : {}),
+              ...(end_date ? { lte: new Date(end_date) } : {}),
+            },
+          }
+        : {}),
+    };
+
     const registrations = await prisma.registration.findMany({
+      where,
       include: {
         student: true,
         parent: true,
