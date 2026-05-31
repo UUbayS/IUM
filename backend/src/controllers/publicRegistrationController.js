@@ -84,7 +84,7 @@ async function submitRegistration(req, res) {
     } = sanitized;
 
     if (!registration_level || !['SMP', 'SMA'].includes(registration_level)) {
-      deleteUploadedFiles(req.files);
+      await deleteUploadedFiles(req.files);
       return res.status(400).json({
         success: false,
         message: 'Jenjang pendaftaran tidak valid',
@@ -92,7 +92,7 @@ async function submitRegistration(req, res) {
     }
 
     if (!full_name || !birth_place || !birth_date || !gender || !child_order || !nisn || !entry_class || !previous_school) {
-      deleteUploadedFiles(req.files);
+      await deleteUploadedFiles(req.files);
       return res.status(400).json({
         success: false,
         message: 'Data santri belum lengkap',
@@ -100,7 +100,7 @@ async function submitRegistration(req, res) {
     }
 
     if (!father_name || !father_job || !father_birth_place || !father_birth_date || !father_phone || !mother_name || !mother_job || !mother_birth_place || !mother_birth_date || !mother_phone) {
-      deleteUploadedFiles(req.files);
+      await deleteUploadedFiles(req.files);
       return res.status(400).json({
         success: false,
         message: 'Data orang tua belum lengkap',
@@ -108,7 +108,7 @@ async function submitRegistration(req, res) {
     }
 
     if (!sender_account_name || !transfer_date) {
-      deleteUploadedFiles(req.files);
+      await deleteUploadedFiles(req.files);
       return res.status(400).json({
         success: false,
         message: 'Data pembayaran belum lengkap',
@@ -116,7 +116,7 @@ async function submitRegistration(req, res) {
     }
 
     if (!isValidNISN(nisn)) {
-      deleteUploadedFiles(req.files);
+      await deleteUploadedFiles(req.files);
       return res.status(400).json({
         success: false,
         message: 'NISN harus 10 digit angka',
@@ -124,7 +124,7 @@ async function submitRegistration(req, res) {
     }
 
     if (!isValidPhone(father_phone) || !isValidPhone(mother_phone)) {
-      deleteUploadedFiles(req.files);
+      await deleteUploadedFiles(req.files);
       return res.status(400).json({
         success: false,
         message: 'Nomor telepon tidak valid',
@@ -132,7 +132,7 @@ async function submitRegistration(req, res) {
     }
 
     if (!isValidDate(birth_date) || !isValidDate(father_birth_date) || !isValidDate(mother_birth_date)) {
-      deleteUploadedFiles(req.files);
+      await deleteUploadedFiles(req.files);
       return res.status(400).json({
         success: false,
         message: 'Format tanggal tidak valid',
@@ -140,7 +140,7 @@ async function submitRegistration(req, res) {
     }
 
     if (!isPositiveInt(child_order)) {
-      deleteUploadedFiles(req.files);
+      await deleteUploadedFiles(req.files);
       return res.status(400).json({
         success: false,
         message: 'Anak ke harus angka positif',
@@ -150,7 +150,7 @@ async function submitRegistration(req, res) {
     const mappedGender = mapGender(gender);
 
     if (!mappedGender) {
-      deleteUploadedFiles(req.files);
+      await deleteUploadedFiles(req.files);
       return res.status(400).json({
         success: false,
         message: 'Jenis kelamin tidak valid',
@@ -159,7 +159,7 @@ async function submitRegistration(req, res) {
 
     for (const docType of requiredDocumentTypes) {
       if (!req.files?.[docType]?.[0]) {
-        deleteUploadedFiles(req.files);
+        await deleteUploadedFiles(req.files);
         return res.status(400).json({
           success: false,
           message: `Dokumen ${docType} wajib diunggah`,
@@ -168,7 +168,7 @@ async function submitRegistration(req, res) {
     }
 
     if (!req.files?.payment_proof?.[0]) {
-      deleteUploadedFiles(req.files);
+      await deleteUploadedFiles(req.files);
       return res.status(400).json({
         success: false,
         message: 'Bukti transfer wajib diunggah',
@@ -267,7 +267,7 @@ async function submitRegistration(req, res) {
     });
   } catch (error) {
     logError(error, 'submitRegistration');
-    deleteUploadedFiles(req.files);
+    await deleteUploadedFiles(req.files);
 
     return res.status(500).json({
       success: false,
