@@ -1,19 +1,32 @@
 const prisma = require('../config/prisma');
 
 async function generateRegistrationNumber() {
-  const year = new Date().getFullYear();
+  return prisma.$transaction(async (tx) => {
+    const year = new Date().getFullYear();
 
-  const count = await prisma.registration.count({
-    where: {
-      registrationNumber: {
-        startsWith: `PSB-${year}`,
+    const lastRegistration = await tx.registration.findFirst({
+      where: {
+        registrationNumber: {
+          startsWith: `PSB-${year}`,
+        },
       },
-    },
+      orderBy: {
+        registrationNumber: 'desc',
+      },
+    });
+
+    let nextNumber = 1;
+
+    if (lastRegistration) {
+      const lastNumber = parseInt(
+        lastRegistration.registrationNumber.split('-')[2],
+        10
+      );
+      nextNumber = lastNumber + 1;
+    }
+
+    return `PSB-${year}-${String(nextNumber).padStart(4, '0')}`;
   });
-
-  const nextNumber = String(count + 1).padStart(4, '0');
-
-  return `PSB-${year}-${nextNumber}`;
 }
 
 module.exports = generateRegistrationNumber;
