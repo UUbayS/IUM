@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const prisma = require('../config/prisma');
+const { isTokenBlacklisted } = require('../utils/tokenBlacklist');
 
 async function authMiddleware(req, res, next) {
   try {
@@ -13,6 +14,14 @@ async function authMiddleware(req, res, next) {
     }
 
     const token = authHeader.split(' ')[1];
+
+    if (isTokenBlacklisted(token)) {
+      return res.status(401).json({
+        success: false,
+        message: 'Token sudah tidak berlaku',
+      });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const admin = await prisma.admin.findUnique({

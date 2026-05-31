@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const prisma = require('../config/prisma');
 const { logError } = require('../utils/logger');
+const { blacklistToken } = require('../utils/tokenBlacklist');
 
 async function loginAdmin(req, res) {
   try {
@@ -74,4 +75,14 @@ async function loginAdmin(req, res) {
   }
 }
 
-module.exports = { loginAdmin };
+async function logoutAdmin(req, res) {
+  const token = req.headers.authorization.split(' ')[1];
+  blacklistToken(token);
+
+  return res.json({
+    success: true,
+    message: 'Logout berhasil',
+  });
+}
+
+module.exports = { loginAdmin, logoutAdmin };
