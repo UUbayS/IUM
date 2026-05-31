@@ -4,6 +4,7 @@ const generateAccessCode = require('../utils/generateAccessCode');
 const deleteUploadedFiles = require('../utils/deleteUploadedFiles');
 const { sanitizeObject } = require('../utils/sanitize');
 const { logError } = require('../utils/logger');
+const { isValidNISN, isValidPhone, isValidDate, isPositiveInt } = require('../utils/validators');
 
 const requiredDocumentTypes = [
   'kartu_keluarga',
@@ -111,6 +112,38 @@ async function submitRegistration(req, res) {
       return res.status(400).json({
         success: false,
         message: 'Data pembayaran belum lengkap',
+      });
+    }
+
+    if (!isValidNISN(nisn)) {
+      deleteUploadedFiles(req.files);
+      return res.status(400).json({
+        success: false,
+        message: 'NISN harus 10 digit angka',
+      });
+    }
+
+    if (!isValidPhone(father_phone) || !isValidPhone(mother_phone)) {
+      deleteUploadedFiles(req.files);
+      return res.status(400).json({
+        success: false,
+        message: 'Nomor telepon tidak valid',
+      });
+    }
+
+    if (!isValidDate(birth_date) || !isValidDate(father_birth_date) || !isValidDate(mother_birth_date)) {
+      deleteUploadedFiles(req.files);
+      return res.status(400).json({
+        success: false,
+        message: 'Format tanggal tidak valid',
+      });
+    }
+
+    if (!isPositiveInt(child_order)) {
+      deleteUploadedFiles(req.files);
+      return res.status(400).json({
+        success: false,
+        message: 'Anak ke harus angka positif',
       });
     }
 
