@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RegistrationLevel {
+  SMP
+  SMA
+}
+
+enum Gender {
+  LAKI_LAKI
+  PEREMPUAN
+}
+
+enum AcademicLevel {
+  SMP
+  SMA
+  MTS
+  MA
+}
+
+enum RegistrationStatus {
+  MENUNGGU_VERIFIKASI
+  BERKAS_KURANG
+  MENUNGGU_PEMBAYARAN
+  PEMBAYARAN_TERVERIFIKASI
+  DITERIMA
+  DITOLAK
+}
+
+enum DocumentType {
+  KARTU_KELUARGA
+  KARTU_NISN
+  AKTA_KELAHIRAN
+  KTP_ORANG_TUA
+  TRANSKRIP_NILAI
+  IJAZAH
+  SKL_MUTASI
+}
+
+enum DocumentStatus {
+  BELUM_DICEK
+  VALID
+  TIDAK_VALID
+  PERLU_REVISI
+}
+
+enum PaymentStatus {
+  MENUNGGU_VERIFIKASI
+  VALID
+  TIDAK_VALID
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  verifiedPayments Payment[]
+
+  @@map("admins")
+}
+
+model Registration {
+  id                 String             @id @default(uuid())
+  registrationNumber String             @unique
+  accessCode         String
+  registrationLevel  RegistrationLevel
+  status             RegistrationStatus @default(MENUNGGU_VERIFIKASI)
+  adminNote          String?
+  submittedAt        DateTime           @default(now())
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  student   Student?
+  parent    Parent?
+  documents Document[]
+  payment   Payment?
+
+  @@map("registrations")
+}
+
+model Student {
+  id             String         @id @default(uuid())
+  registrationId String         @unique
+  fullName       String
+  birthPlace     String
+  birthDate      DateTime
+  gender         Gender
+  childOrder     Int
+  nisn           String
+  academicLevel  AcademicLevel?
+  entryClass     String
+  previousSchool String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  @@map("students")
+}
+
+model Parent {
+  id               String   @id @default(uuid())
+  registrationId   String   @unique
+  fatherName       String
+  fatherJob        String
+  fatherBirthPlace String
+  fatherBirthDate  DateTime
+  fatherPhone      String
+  motherName       String
+  motherJob        String
+  motherBirthPlace String
+  motherBirthDate  DateTime
+  motherPhone      String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  @@map("parents")
+}
+
+model Document {
+  id                 String         @id @default(uuid())
+  registrationId     String
+  documentType       DocumentType
+  filePath           String
+  fileOriginalName   String
+  fileSize           Int
+  fileMimeType       String
+  isRequired         Boolean        @default(true)
+  verificationStatus DocumentStatus @default(BELUM_DICEK)
+  adminNote          String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  @@unique([registrationId, documentType])
+  @@map("documents")
+}
+
+model Payment {
+  id                String        @id @default(uuid())
+  registrationId    String        @unique
+  senderAccountName String
+  transferDate      DateTime
+  paymentProofPath  String
+  paymentStatus     PaymentStatus @default(MENUNGGU_VERIFIKASI)
+  adminNote         String?
+  verifiedById      String?
+  verifiedAt        DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  verifiedBy   Admin?       @relation(fields: [verifiedById], references: [id], onDelete: SetNull)
+
+  @@map("payments")
+}
