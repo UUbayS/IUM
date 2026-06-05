@@ -1,0 +1,598 @@
+/* src/app/daftar/page.module.css */
+.pageWrapper {
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.heroSection {
+  background-color: #0f172a;
+  color: white;
+  text-align: center;
+  padding: 4rem 2rem 8rem 2rem;
+}
+
+.heroTitle {
+  font-family: serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.heroSubtitle {
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.contentWrapper {
+  max-width: 900px;
+  margin: -4rem auto 4rem auto;
+  padding: 0 1rem;
+}
+
+.stepperCard {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.stepItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.stepNumber {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: bold;
+  background-color: #f1f5f9;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.stepNumberActive {
+  background-color: #fbbf24;
+  color: #0f172a;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #fbbf24;
+}
+
+.stepLabel {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.stepLabelActive {
+  color: #0f172a;
+  font-weight: bold;
+}
+
+.stepDivider {
+  height: 2px;
+  background-color: #0f172a;
+  flex: 1;
+  margin: 0 0.5rem;
+  margin-top: -24px;
+}
+
+.formCard {
+  background: white;
+  border-radius: 12px;
+  padding: 3rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.sectionLine {
+  width: 4px;
+  height: 24px;
+  background-color: #fbbf24;
+}
+
+.sectionTitle {
+  font-family: serif;
+  font-size: 1.5rem;
+  color: #0f172a;
+  margin: 0;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.formGroupFull {
+  grid-column: span 2;
+}
+
+.label {
+  font-weight: bold;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.inputUnderline {
+  border: none;
+  border-bottom: 1px solid #0f172a;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  color: #333;
+  background: transparent;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.inputUnderline:focus {
+  border-bottom-color: #fbbf24;
+}
+
+.inputUnderline::placeholder {
+  color: #94a3b8;
+}
+
+.rowInputs {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.radioGroup {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.radioInput {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #0f172a;
+  border-radius: 50%;
+  margin: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.radioInput:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: #0f172a;
+  border-radius: 50%;
+}
+
+.radioBoxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.radioBoxLabel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.radioBoxLabelActive {
+  border: 2px solid #0f172a;
+}
+
+.dateInputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dateInputContainer input {
+  width: 100%;
+}
+
+.dateIcon {
+  position: absolute;
+  right: 0;
+  color: #0f172a;
+  pointer-events: none;
+}
+
+.formActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+}
+
+.btnBack {
+  background-color: #e2e8f0;
+  color: #94a3b8;
+  padding: 0.8rem 2.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  border: none;
+  cursor: not-allowed;
+}
+
+.btnNext {
+  background-color: #0f172a;
+  color: white;
+  padding: 0.8rem 2.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.3s;
+}
+
+.btnNext:hover {
+  opacity: 0.9;
+}
+
+.guideBox {
+  background-color: #0f172a;
+  color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.guideTitle {
+  color: #fbbf24;
+  font-family: serif;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.guideList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.guideItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.guideIcon {
+  color: #fbbf24;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.guideText {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.uploadGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.uploadCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #f8fafc;
+}
+
+.uploadHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.uploadIcon {
+  color: #0f172a;
+}
+
+.uploadLimit {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.uploadTitle {
+  font-weight: bold;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.uploadDesc {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.uploadAction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.uploadActionIcon {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.confirmHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+}
+
+.confirmTitle {
+  font-family: serif;
+  font-size: 2.5rem;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.confirmSubtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.confirmLayout {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+}
+
+.confirmLeft {
+  flex: 2;
+  background: white;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.confirmRight {
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.feeItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.feeItem:last-child {
+  border-bottom: none;
+}
+
+.feeItemBold {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #0f172a;
+}
+
+.feeTotal {
+  color: #b45309;
+}
+
+.bankCard {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.bankCardTitle {
+  font-weight: bold;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.bankCardAcc {
+  color: #b45309;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.bankCardName {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.uploadDashed {
+  border: 2px dashed #cbd5e1;
+  background-color: #f8fafc;
+  padding: 2.5rem;
+  border-radius: 8px;
+  text-align: center;
+  color: #64748b;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.uploadNote {
+  font-size: 0.8rem;
+  color: #0f172a;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.btnSubmit {
+  background-color: #fbbf24;
+  color: #0f172a;
+  padding: 0.8rem 2.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.3s;
+}
+
+.btnSubmit:hover {
+  opacity: 0.9;
+}
+
+.bankCardAccWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+.copyButton {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.copyButton:hover {
+  color: #0f172a;
+  background-color: #e2e8f0;
+}
+
+@media (max-width: 768px) {
+  .formGrid, .confirmLayout {
+    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+  .formGroupFull {
+    grid-column: span 1;
+  }
+  .stepperCard {
+    padding: 1rem;
+  }
+  .stepLabel {
+    display: none;
+  }
+}
+
+.stepNumberCompleted {
+  background-color: #0f172a;
+  color: white;
+  border: 3px solid white;
+}
+
+.inputBox {
+  border: 1px solid #cbd5e1;
+  padding: 0.8rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #333;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.inputBox:focus {
+  border-color: #fbbf24;
+}
+
+.inputBox::placeholder {
+  color: #94a3b8;
+}
+
+.dateIconBox {
+  position: absolute;
+  right: 1rem;
+  color: #0f172a;
+  pointer-events: none;
+}
+
+.btnPrimaryActive {
+  background-color: #0f172a;
+  color: white;
+  padding: 0.8rem 2.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.3s;
+}
+
+.btnPrimaryActive:hover {
+  opacity: 0.9;
+}
