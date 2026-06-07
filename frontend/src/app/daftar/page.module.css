@@ -131,6 +131,9 @@
 
 .formGroupFull {
   grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 .label {
