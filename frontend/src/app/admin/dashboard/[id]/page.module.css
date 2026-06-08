@@ -379,3 +379,39 @@
     grid-template-columns: 1fr;
   }
 }
+
+.copyGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.iconBtn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.viewProofLink {
+  color: #3b82f6;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.viewProofLink:hover {
+  color: #2563eb;
+}

@@ -9,6 +9,7 @@ import {
   verifyDocument,
   verifyPayment,
   downloadDocument,
+  API_BASE,
 } from '@/lib/api';
 import styles from './page.module.css';
 
@@ -43,6 +44,7 @@ interface Document {
   fileOriginalName: string;
   verificationStatus: string;
   adminNote: string | null;
+  filePath: string;
 }
 
 interface Payment {
@@ -57,6 +59,7 @@ interface Payment {
 interface RegistrationDetail {
   id: string;
   registrationNumber: string;
+  accessCode: string;
   registrationLevel: string;
   status: string;
   adminNote: string | null;
@@ -133,6 +136,11 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
     setTimeout(() => setSuccessMsg(''), 3000);
   }
 
+  function handleCopy(text: string, label: string) {
+    navigator.clipboard.writeText(text);
+    showSuccess(`${label} disalin!`);
+  }
+
   async function handleStatusUpdate() {
     if (!data || selectedStatus === data.status) return;
     setStatusLoading(true);
@@ -168,14 +176,23 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
     }
   }
 
-  async function handleDocDownload(docId: string) {
+  async function handleDocDownload(docId: string, filename: string) {
     try {
+      showSuccess('Memproses dokumen...');
       const blob = await downloadDocument(docId);
       const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
     } catch (err: unknown) {
       if (err instanceof Error && err.message === 'UNAUTHORIZED') {
         router.push('/admin/login');
+      } else {
+        alert('Gagal mendownload dokumen');
       }
     }
   }
@@ -210,7 +227,18 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
         <div className={styles.headerInfo}>
           <h1 className={styles.detailTitle}>Detail Pendaftar</h1>
           <div className={styles.headerMeta}>
-            <span className={styles.regNumber}>{data.registrationNumber}</span>
+            <div className={styles.copyGroup}>
+              <span className={styles.regNumber}>No. Daftar: {data.registrationNumber}</span>
+              <button onClick={() => handleCopy(data.registrationNumber, 'Nomor pendaftaran')} className={styles.iconBtn} title="Copy Nomor Pendaftaran">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+            </div>
+            <div className={styles.copyGroup}>
+              <span className={styles.regNumber}>Kode Akses: {data.accessCode}</span>
+              <button onClick={() => handleCopy(data.accessCode, 'Kode akses')} className={styles.iconBtn} title="Copy Kode Akses">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+            </div>
             <span className={styles.statusBadgeLg} style={{ background: `${statusInfo?.color}18`, color: statusInfo?.color, borderColor: `${statusInfo?.color}40` }}>
               {statusInfo?.label}
             </span>
@@ -320,7 +348,16 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
                       </span>
                     </div>
                     <div className={styles.docActions}>
-                      <button onClick={() => handleDocDownload(doc.id)} className={styles.docActionBtn} title="Download">
+                      <a 
+                        href={`${API_BASE.replace('/api', '')}/${doc.filePath}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className={styles.docActionBtn} 
+                        title="Lihat Dokumen"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                      </a>
+                      <button onClick={() => handleDocDownload(doc.id, doc.fileOriginalName)} className={styles.docActionBtn} title="Download Dokumen">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                       </button>
                       <select
@@ -351,6 +388,12 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
                 <div className={styles.infoGrid}>
                   <div className={styles.infoItem}><span className={styles.infoLabel}>Nama Pengirim</span><span className={styles.infoValue}>{data.payment.senderAccountName}</span></div>
                   <div className={styles.infoItem}><span className={styles.infoLabel}>Tanggal Transfer</span><span className={styles.infoValue}>{new Date(data.payment.transferDate).toLocaleDateString('id-ID')}</span></div>
+                  <div className={styles.infoItem}>
+                    <span className={styles.infoLabel}>Bukti Transfer</span>
+                    <a href={`${API_BASE.replace('/api', '')}/${data.payment.paymentProofPath}`} target="_blank" rel="noopener noreferrer" className={styles.viewProofLink}>
+                      Lihat Bukti ↗
+                    </a>
+                  </div>
                   <div className={styles.infoItem}>
                     <span className={styles.infoLabel}>Status</span>
                     <span className={styles.infoValue} style={{ color: PAY_STATUS[data.payment.paymentStatus]?.color, fontWeight: 700 }}>
