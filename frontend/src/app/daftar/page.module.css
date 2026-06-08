@@ -726,3 +726,22 @@
 .btnHomeOutline:hover {
   background: #f8fafc;
 }
+
+.toastNotification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #22c55e;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  font-weight: 500;
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

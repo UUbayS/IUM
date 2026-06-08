@@ -10,6 +10,7 @@ export default function Daftar() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [toast, setToast] = useState('');
 
   // Bypass hydration errors caused by browser extensions injecting attributes
   useEffect(() => {
@@ -111,7 +112,8 @@ export default function Daftar() {
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert('Nomor rekening disalin!');
+    setToast('Nomor rekening berhasil disalin!');
+    setTimeout(() => setToast(''), 3000);
   };
 
   const handleSubmit = async () => {
@@ -159,6 +161,13 @@ export default function Daftar() {
 
   return (
     <div className={styles.pageWrapper}>
+      {/* Toast Notification */}
+      {toast && (
+        <div className={styles.toastNotification}>
+          {toast}
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className={styles.heroSection}>
         <h1 className={styles.heroTitle}>Formulir Pendaftaran Online</h1>

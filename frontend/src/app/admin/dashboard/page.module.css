@@ -314,3 +314,22 @@
     grid-template-columns: 1fr;
   }
 }
+
+.errorToast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: #ef4444;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  z-index: 1000;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

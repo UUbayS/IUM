@@ -51,6 +51,12 @@ export default function AdminDashboard() {
   const [filterStatus, setFilterStatus] = useState('');
   const [filterLevel, setFilterLevel] = useState('');
   const [exporting, setExporting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  function showError(msg: string) {
+    setErrorMsg(msg);
+    setTimeout(() => setErrorMsg(''), 3000);
+  }
 
   const fetchData = useCallback(async (page = 1) => {
     setLoading(true);
@@ -90,7 +96,7 @@ export default function AdminDashboard() {
         level: filterLevel || undefined,
       });
     } catch {
-      alert('Gagal export data');
+      showError('Gagal export data');
     } finally {
       setExporting(false);
     }
@@ -104,6 +110,7 @@ export default function AdminDashboard() {
 
   return (
     <div className={styles.dashboard}>
+      {errorMsg && <div className={styles.errorToast}>{errorMsg}</div>}
       <h1 className={styles.pageTitle}>Dashboard Pendaftaran Santri Baru</h1>
 
       {/* Stats Cards */}

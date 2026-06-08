@@ -111,6 +111,7 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
   const [statusNote, setStatusNote] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     fetchDetail();
@@ -136,6 +137,11 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
     setTimeout(() => setSuccessMsg(''), 3000);
   }
 
+  function showError(msg: string) {
+    setErrorMsg(msg);
+    setTimeout(() => setErrorMsg(''), 3000);
+  }
+
   function handleCopy(text: string, label: string) {
     navigator.clipboard.writeText(text);
     showSuccess(`${label} disalin!`);
@@ -150,7 +156,7 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
       setStatusNote('');
       fetchDetail();
     } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : 'Gagal update status');
+      showError(err instanceof Error ? err.message : 'Gagal update status');
     } finally {
       setStatusLoading(false);
     }
@@ -162,7 +168,7 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
       showSuccess('Status dokumen diperbarui!');
       fetchDetail();
     } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : 'Gagal verifikasi dokumen');
+      showError(err instanceof Error ? err.message : 'Gagal verifikasi dokumen');
     }
   }
 
@@ -172,7 +178,7 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
       showSuccess('Status pembayaran diperbarui!');
       fetchDetail();
     } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : 'Gagal verifikasi pembayaran');
+      showError(err instanceof Error ? err.message : 'Gagal verifikasi pembayaran');
     }
   }
 
@@ -192,7 +198,7 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
       if (err instanceof Error && err.message === 'UNAUTHORIZED') {
         router.push('/admin/login');
       } else {
-        alert('Gagal mendownload dokumen');
+        showError('Gagal mendownload dokumen');
       }
     }
   }
@@ -217,6 +223,7 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
   return (
     <div className={styles.detailPage}>
       {successMsg && <div className={styles.successToast}>{successMsg}</div>}
+      {errorMsg && <div className={styles.errorToast}>{errorMsg}</div>}
 
       {/* Header */}
       <div className={styles.detailHeader}>
