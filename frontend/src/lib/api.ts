@@ -62,6 +62,17 @@ export async function logoutAdmin() {
   return res.json();
 }
 
+export async function changePassword(currentPassword: string, newPassword: string) {
+  const res = await authFetch(`${API_BASE}/admin/change-password`, {
+    method: 'PUT',
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+  const data = await res.json();
+  if (res.status === 401) throw new Error('UNAUTHORIZED');
+  if (!res.ok) throw new Error(data.message || 'Gagal mengubah password');
+  return data;
+}
+
 // --- Registrations ---
 export async function getRegistrations(params: {
   page?: number;

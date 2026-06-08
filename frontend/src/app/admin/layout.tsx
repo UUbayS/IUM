@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { getToken, getAdminInfo, logoutAdmin } from '@/lib/api';
+import Sidebar from './components/Sidebar';
 import styles from './layout.module.css';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -43,41 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className={styles.adminWrapper}>
       {/* Sidebar */}
-      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed}`}>
-        <div className={styles.sidebarHeader}>
-          <h2 className={styles.sidebarTitle}>PSB Admin</h2>
-        </div>
-        <nav className={styles.sidebarNav}>
-          <Link
-            href="/admin/dashboard"
-            className={`${styles.navItem} ${pathname?.startsWith('/admin/dashboard') ? styles.navItemActive : ''}`}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-            <span>Dashboard</span>
-          </Link>
-          <Link
-            href="/"
-            className={styles.navItem}
-            target="_blank"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            </svg>
-            <span>Lihat Website</span>
-          </Link>
-          <button onClick={handleLogout} className={`${styles.navItem} ${styles.navItemLogout}`}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-            <span>Logout</span>
-          </button>
-        </nav>
-      </aside>
+      <Sidebar sidebarOpen={sidebarOpen} handleLogout={handleLogout} />
 
       {/* Main */}
       <div className={styles.mainContent}>
