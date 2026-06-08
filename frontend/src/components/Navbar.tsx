@@ -18,6 +18,7 @@ export default function Navbar() {
         <Link href="/" className={styles.navLink}>Home</Link>
         <Link href="/#profile" className={styles.navLink}>Profile</Link>
         <Link href="/#contact" className={styles.navLink}>Contact</Link>
+        <Link href="/cek-status" className={styles.navLink}>Cek Status</Link>
         <Link href="/daftar" className={styles.btnPrimary}>Daftar Sekarang</Link>
       </nav>
     </header>

@@ -536,17 +536,17 @@ export default function Daftar() {
               </div>
 
               <div className={styles.formGroup} style={{ marginBottom: '1.5rem' }}>
-                <label className={styles.label}>Nama Pengirim Rekening</label>
+                <label className={styles.label}>Nama Pengirim Rekening *</label>
                 <input type="text" name="sender_account_name" value={formData.sender_account_name} onChange={handleInputChange} placeholder="Masukkan Nama Lengkap" className={styles.inputBox} />
               </div>
 
               <div className={styles.formGroup} style={{ marginBottom: '1.5rem' }}>
-                <label className={styles.label}>Tanggal Transfer</label>
+                <label className={styles.label}>Tanggal Transfer *</label>
                 <input type="date" name="transfer_date" value={formData.transfer_date} onChange={handleInputChange} className={styles.inputBox} />
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label}>Unggah Bukti Transfer</label>
+                <label className={styles.label}>Unggah Bukti Transfer *</label>
                 <div className={styles.uploadDashed}>
                   <input 
                     type="file" 
