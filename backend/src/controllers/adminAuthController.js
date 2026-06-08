@@ -85,4 +85,55 @@ async function logoutAdmin(req, res) {
   });
 }
 
-module.exports = { loginAdmin, logoutAdmin };
+async function changePassword(req, res) {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const adminId = req.admin.id;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password sekarang dan password baru wajib diisi',
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password baru minimal 6 karakter',
+      });
+    }
+
+    const admin = await prisma.admin.findUnique({
+      where: { id: adminId },
+    });
+
+    const isPasswordValid = await bcrypt.compare(currentPassword, admin.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password sekarang tidak sesuai',
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.admin.update({
+      where: { id: adminId },
+      data: { password: hashedPassword },
+    });
+
+    return res.json({
+      success: true,
+      message: 'Password berhasil diubah',
+    });
+  } catch (error) {
+    logError(error, 'changePassword');
+    return res.status(500).json({
+      success: false,
+      message: 'Terjadi kesalahan server',
+    });
+  }
+}
+
+module.exports = { loginAdmin, logoutAdmin, changePassword };
