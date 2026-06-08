@@ -8,8 +8,7 @@ import {
   updateRegistrationStatus,
   verifyDocument,
   verifyPayment,
-  getDocumentDownloadUrl,
-  getToken,
+  downloadDocument,
 } from '@/lib/api';
 import styles from './page.module.css';
 
@@ -169,11 +168,16 @@ export default function RegistrationDetailPage({ params }: { params: Promise<{ i
     }
   }
 
-  function handleDocDownload(docId: string) {
-    const url = getDocumentDownloadUrl(docId);
-    const token = getToken();
-    // Open in new tab with auth
-    window.open(`${url}?token=${token}`, '_blank');
+  async function handleDocDownload(docId: string) {
+    try {
+      const blob = await downloadDocument(docId);
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message === 'UNAUTHORIZED') {
+        router.push('/admin/login');
+      }
+    }
   }
 
   if (loading) {

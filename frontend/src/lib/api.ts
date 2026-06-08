@@ -115,8 +115,11 @@ export async function verifyDocument(id: string, verificationStatus: string, adm
   return data;
 }
 
-export function getDocumentDownloadUrl(id: string): string {
-  return `${API_BASE}/admin/documents/${id}/download`;
+export async function downloadDocument(id: string): Promise<Blob> {
+  const res = await authFetch(`${API_BASE}/admin/documents/${id}/download`);
+  if (res.status === 401) throw new Error('UNAUTHORIZED');
+  if (!res.ok) throw new Error('Gagal download dokumen');
+  return res.blob();
 }
 
 // --- Payments ---
