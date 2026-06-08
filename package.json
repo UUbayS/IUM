@@ -1,0 +1,18 @@
+{
+  "name": "ium-psb-pondok",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monorepo: backend (Express+Prisma) + frontend (Next.js)",
+  "scripts": {
+    "dev": "concurrently -n BE,FE -c blue,green \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "dev:be": "npm --prefix backend run dev",
+    "dev:fe": "npm --prefix frontend run dev",
+    "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install",
+    "prisma:generate": "npm --prefix backend run prisma:generate",
+    "prisma:migrate": "npm --prefix backend run prisma:migrate",
+    "seed": "npm --prefix backend run seed"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

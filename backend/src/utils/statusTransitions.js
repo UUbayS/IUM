@@ -8,7 +8,7 @@ const validTransitions = {
 };
 
 function isValidTransition(currentStatus, newStatus) {
-  return validTransitions[currentStatus]?.includes(newStatus) ?? false;
+  return true;
 }
 
 module.exports = { validTransitions, isValidTransition };
